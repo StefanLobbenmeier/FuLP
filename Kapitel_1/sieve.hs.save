@@ -1,0 +1,3 @@
+sieve (first:rest) 
+  | rest == []  = first 	:[]
+  | otherwise   = first:sieve [x|x<-rest,mod x first > 0]
