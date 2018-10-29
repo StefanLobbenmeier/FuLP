@@ -1,3 +1,6 @@
+import Data.List 
+import Text.Printf
+
 addfun z = \ x -> x + z
 
 inc = addfun 1
@@ -50,3 +53,35 @@ namen = ["Thomas","Jan","Anna","Kristina"]
 
 myfilter :: (d-> Bool) -> [d] -> [d]
 myfilter filter_func list = [x | x <- list, filter_func x]
+
+
+
+sortnormal = sortBy compare
+sortrev = sortBy (flip compare)
+namen_sortiert = sortnormal namen
+namen_sortiert_za = sortrev namen
+
+sortByAbs = sortBy (\x y -> compare (abs x) (abs y))
+
+sortByLengthOfList :: [[a]] -> [[a]]
+sortByLengthOfList = sortBy (\x y -> compare (length x) (length y))
+
+buchstabenUndZahlenSalat = zip [1..26] ['a'..'z']
+
+-- This one will only go from (a to e) because the numbers are shorter:
+buchstabenUndZahlenSalatKurzUndLang = zip [1..5] ['a'..'z'] 
+
+myZipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+myZipWith f [] _ = []
+myZipWith f _ [] = []
+myZipWith f (a:arest) (b:brest) = (f a b):(myZipWith f arest brest)
+
+buchstabenUndZahlenSalatPrintf = myZipWith (\x y -> printf "%4d: %s" x y :: String) ([1..]::[Integer]) ["ab", "cd", "ef"]
+
+data LispList a
+    = Nil
+    | Cons a (LispList a) 
+    deriving Show
+
+-- (@@) :: a -> LispList a -> LispList a
+-- (@@) a b = Cons a b
