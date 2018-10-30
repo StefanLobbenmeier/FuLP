@@ -1,4 +1,5 @@
 import Data.List 
+import Data.Char
 import Text.Printf
 
 addfun z = \ x -> x + z
@@ -85,3 +86,73 @@ data LispList a
 
 -- (@@) :: a -> LispList a -> LispList a
 -- (@@) a b = Cons a b
+
+listMap :: (a -> b) -> LispList a -> LispList b
+listMap f Nil = Nil
+listMap f (Cons x rest) = Cons (f x) (listMap f rest)
+
+lispListExample = Cons 1 (Cons 2 (Cons 3 Nil))
+listMapExample = (*5) listMapExample
+
+instance Functor LispList where
+    fmap = listMap
+
+data Tree basistyp
+    = Leaf basistyp
+    | InnerNode basistyp (Tree basistyp) (Tree basistyp)
+    deriving Show
+
+
+treeMap :: (a -> b) -> Tree a -> Tree b
+treeMap f (Leaf x) = Leaf (f x)
+treeMap f (InnerNode x y z) = InnerNode (f x) (treeMap f y) (treeMap f z)
+
+instance Functor Tree where
+    fmap = treeMap
+    
+treeExample = InnerNode 5 (Leaf 4) (Leaf 6)
+
+
+-- Kontrollaufgaben
+transform = map (\x -> head x) . sortBy (\x y -> compare (map toUpper x) (map toUpper y)) . map (\x -> [x])
+-- this wraps each character of the string in an array, sorts the array of arrays and finally converts each inner array back to a char
+
+-- without wrapping it can be easier:
+bettertransform = sortBy (\x y -> compare (toUpper x) (toUpper y)) 
+
+
+-- 11
+
+curry3 :: ((a, b, c) -> d) -> a -> b -> c -> d
+curry3 f a b c = f (a,b,c)
+
+uncurry3 :: (a -> b -> c -> d) -> (a, b, c) -> d
+uncurry3 f (a,b,c) = f a b c
+
+f1 :: (Int,Int,Int) -> Int
+f1 (x,y,z) = x + y + z
+
+f2 :: Int -> Int -> Int -> Int
+f2 x y z = x + y + z
+
+testCurry3 = curry3 f1 1 2 3
+testUncurry3 = uncurry3 f2 (1,2,3)
+
+-- 12
+
+data CommentList a 
+    = NilCL
+    | ConsCL (a, String) (CommentList a)
+    -- deriving Show
+
+a = NilCL
+b = ConsCL (20,"Kommentar") a
+c = ConsCL (10,"") b
+d = ConsCL (5,"Fuenf") c
+
+instance Show a => Show (CommentList a) where
+    show x = "[" ++ showinside x ++ "]" where
+        showtextifnecessary text = (if text == "" then "" else "<" ++ text ++ ">")
+        showinside NilCL = ""
+        showinside (ConsCL (number, text) NilCL) = show number ++ showtextifnecessary text  
+        showinside (ConsCL (number, text) rest) = show number ++ showtextifnecessary text ++ "," ++ showinside rest 
