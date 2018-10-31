@@ -114,6 +114,8 @@ treeExample = InnerNode 5 (Leaf 4) (Leaf 6)
 
 
 -- Kontrollaufgaben
+
+-- 10
 transform = map (\x -> head x) . sortBy (\x y -> compare (map toUpper x) (map toUpper y)) . map (\x -> [x])
 -- this wraps each character of the string in an array, sorts the array of arrays and finally converts each inner array back to a char
 
@@ -150,9 +152,71 @@ b = ConsCL (20,"Kommentar") a
 c = ConsCL (10,"") b
 d = ConsCL (5,"Fuenf") c
 
+-- 12a)
 instance Show a => Show (CommentList a) where
     show x = "[" ++ showinside x ++ "]" where
         showtextifnecessary text = (if text == "" then "" else "<" ++ text ++ ">")
         showinside NilCL = ""
         showinside (ConsCL (number, text) NilCL) = show number ++ showtextifnecessary text  
         showinside (ConsCL (number, text) rest) = show number ++ showtextifnecessary text ++ "," ++ showinside rest 
+
+-- 12b)
+instance Functor CommentList where 
+    fmap f NilCL = NilCL
+    fmap f (ConsCL (number, text) rest) = ConsCL ((f number), text) (fmap f rest)
+
+test_fmap = fmap (*2) d
+
+-- 12c)
+-- instance Eq a => Eq (CommentList a) where 
+--     (==) NilCL NilCL = True
+--     (==) (ConsCL (_, _) _) NilCL = False
+--     (==) NilCL (ConsCL (_, _) _) = False
+--     (==) (ConsCL (number_a, _) rest_a) (ConsCL (number_b, _) rest_b) = (number_a == number_b) && rest_a == rest_b
+
+
+
+-- 12d)
+
+_CL_ignore_comments = False
+
+instance Eq a => Eq (CommentList a) where 
+    (==) NilCL NilCL = True
+    (==) (ConsCL (_, _) _) NilCL = False
+    (==) NilCL (ConsCL (_, _) _) = False
+    (==) (ConsCL (number_a, text_a) rest_a) (ConsCL (number_b, text_b) rest_b) = 
+        (number_a == number_b) && 
+        (_CL_ignore_comments || (text_a == text_b)) &&
+        rest_a == rest_b
+
+test_eq_dd = d == d
+test_eq_dn = d == NilCL
+test_eq_nd = NilCL == d
+test_eq_ab = a == b
+
+test_eq_from_script = b == (ConsCL (20,"") NilCL)
+
+-- 13a)
+lift :: (Int -> Int) -> (Int -> Int)
+lift f = 1 + f
+
+test_lift_f x = 2 * x
+test_lift_f_normal = test_lift_f 4
+test_lift_f_result = lift test_lift_f 4
+
+-- 13b)
+applyif :: (a -> Bool) -> (a -> a) -> ([a] -> [a])
+applyif cond func = map (\x -> if cond x then func x else x) 
+
+test_applyif_cond x = (x<3)
+test_applyif_func x = x*10
+test_applyif_result = applyif test_applyif_cond test_applyif_func [1,2,3,4]
+test_applyif_result_2 = applyif (<3) (*10) [1,2,3,4]
+
+-- 13c)
+ntimes :: (a -> a) -> Int -> (a -> a)
+ntimes func 1 = func
+ntimes func n = func . (ntimes func (n-1))
+
+test_ntimes_times_3_times_5 = (*3) 5
+test_ntimes_times_3_times_5_result = test_ntimes_times_3_times_5 1
