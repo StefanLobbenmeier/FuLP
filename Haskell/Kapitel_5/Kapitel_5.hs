@@ -137,5 +137,5 @@ example15e = join (Just (Just (Just 3)))
 -- >>= erwarted eine Funktion, die etwas "normales" in eine andere Monade kapselt. Die Implementation entnimmt daher den Inhalt der Monade
 -- Da die Funktion id nicht wieder kapselt, kann man so den Inhalt der Monade entnehmen
 
--- Zusatzfrage: es gibt keienen Weg festzustellen wie "tief" eine Monade ist, daher gibt es keine Abbruchbedingung für die Rekursion
+-- Zusatzfrage: es gibt keienen Weg eine Funktion [a] -> a zu definieren, die auch [[a]] -> a erfüllt. In Haskell muss die Typdefinition eindeutig sein.
 
