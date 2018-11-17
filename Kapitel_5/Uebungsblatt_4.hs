@@ -17,7 +17,7 @@ springerzug :: (Int, Int) -> [(Int, Int)]
 springerzug (x, y) = springerzuege <*> [(x, y)] >>= validate
 
 springer3 :: (Int, Int) -> [(Int, Int)]
-springer3 (x, y) = springerzug (x, y) >>= springerzug >>= springerzug
+springer3 (x, y) = pure (x, y) >>= springerzug >>= springerzug >>= springerzug
 
 erreichbar3 :: (Int, Int) -> (Int, Int) -> Bool
 erreichbar3 (startX, startY) (targetX, targetY) = elem (targetX, targetY) (springer3 (startX, startY)) 
