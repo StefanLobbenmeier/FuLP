@@ -60,6 +60,21 @@ internal_get_values_of_column(SelectedRow, SelectedCols, [CurrentColumn|AllColum
         Result = NextResult
     ). 
 
+sudokufeld(Matrix) :- all_cols_valid(Matrix), all_rows_valid(Matrix).
+
+% Usage: example_sudoku_feld(Matrix, A, B, C, D, E), sudokufeld(Matrix).
+example_sudoku_feld([
+    [1,2,3,4,5,E,7,8,J],
+    [2,F,4,5,6,7,8,9,1],
+    [I,4,5,A,7,8,9,C,2],
+    [4,5,6,7,8,9,H,2,3],
+    [5,6,D,8,9,1,2,3,4],
+    [G,7,8,9,1,B,3,4,5],
+    [7,8,9,1,2,3,K,5,6],
+    [8,9,1,2,3,4,5,6,7],
+    [9,1,2,3,4,5,6,7,8]
+], A, B, C, D, E, F, G, H, I, J, K).
+
 % get_block_values([], _, []).
 % get_block_values(([FirstRow|Matrix], ColI, Result)).
 
@@ -67,4 +82,4 @@ internal_get_values_of_column(SelectedRow, SelectedCols, [CurrentColumn|AllColum
 
 % sudokufeld(Matrix) :- two_dim_length(Matrix, 9, 9).
 
-tester([[]], _BlockIndex, []).
+% tester([[]], _BlockIndex, []).
