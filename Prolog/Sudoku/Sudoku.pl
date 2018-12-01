@@ -62,7 +62,7 @@ internal_get_values_of_column(SelectedRow, SelectedCols, [CurrentColumn|AllColum
 
 sudokufeld(Matrix) :- all_cols_valid(Matrix), all_rows_valid(Matrix).
 
-% Usage: example_sudoku_feld(Matrix, A, B, C, D, E), sudokufeld(Matrix).
+% Usage: example_sudoku_feld(Matrix, A, B, C, D, E, F, G, H, I, J, K), sudokufeld(Matrix).
 example_sudoku_feld([
     [1,2,3,4,5,E,7,8,J],
     [2,F,4,5,6,7,8,9,1],
