@@ -150,9 +150,9 @@ benutze(hammer+nagel) :-
   position(spieler,haltestelle),
   benutzbar(hammer),
   benutzbar(nagel),
-  asserta(fahrplan_haengt)
+  asserta(fahrplan_haengt),
   beschreibung(haltestelle,Beschr),
-  write(Beschr), nl,.
+  write(Beschr), nl.
 benutze(nagel+hammer) :- benutze(hammer+nagel).
 
 benutze(X+Y) :- write('Ich kann '), write(X),
